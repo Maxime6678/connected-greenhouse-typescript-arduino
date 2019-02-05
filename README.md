@@ -14,3 +14,11 @@ Find the program of the arduino board
 #### `communication`
 
 Find the program that allows the connection between the site and the arduino board
+
+### Screenshots
+
+#### Login page
+![Login page](./screenshots/login.png)
+
+#### Panel page
+![Login page](./screenshots/panel_v1.png)
