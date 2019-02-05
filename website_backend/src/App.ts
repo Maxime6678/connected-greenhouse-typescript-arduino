@@ -1,4 +1,4 @@
-import { ManagerSite } from './utils/express/ManagerSite'
+import { ManagerSite } from './classes/ManagerSite'
 import * as debug from 'debug'
 
 // Register libs

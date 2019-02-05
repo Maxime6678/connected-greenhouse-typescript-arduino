@@ -1,0 +1,187 @@
+doctype html
+html(lang='fr')
+	head
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+		title Interface · Mini-Serre
+		link(href='./assets/css/bootstrap.min.css', rel='stylesheet')
+		link(href='./assets/css/panel.css', rel='stylesheet')
+	body
+		nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+			a.navbar-brand(href='#') Mini-Serre
+			button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
+				span.navbar-toggler-icon
+			#navbarNav.collapse.navbar-collapse
+				ul.navbar-nav
+					li.nav-item.active
+						a.nav-link(href='#') Résumé
+					li.nav-item
+						a.nav-link(href='#') Plan
+					li.nav-item
+						a.nav-link(href='#') Informations capteurs
+					li.nav-item
+						a.nav-link(href='#') Alertes
+		.container
+			.row
+				.col
+					.alert.alert-danger(role='alert')
+						| Une alerte ou plusieurs alertes ont été détectés, merci de vous rendre dans la section "Alertes"
+			section#informations
+				.row
+					.col
+						.card
+							.card-header
+								| Informations de la serre
+							.card-body
+								.row
+									.col-lg-4.col-md-12.col-sm-12
+										h5.text-center Température
+										.progress(data-percentage='43')
+											span.progress-left
+												span.progress-bar(style='border-color: orange;')
+											span.progress-right
+												span.progress-bar(style='border-color: orange;')
+											.progress-value
+												div
+													p 22°C
+									.col-lg-4.col-md-12.col-sm-12
+										h5.text-center Humidité
+										.progress(data-percentage='52')
+											span.progress-left
+												span.progress-bar(style='border-color: yellow;')
+											span.progress-right
+												span.progress-bar(style='border-color: yellow;')
+											.progress-value
+												div
+													p 52%
+									.col-lg-4.col-md-12.col-sm-12
+										h5.text-center Eclairage
+										.progress(data-percentage='81')
+											span.progress-left
+												span.progress-bar
+											span.progress-right
+												span.progress-bar
+											.progress-value
+												div
+													p Bon
+					.col
+						.card
+							.card-header
+								| Qualité de l'air
+							.card-body
+								.row
+									.col-lg-6.col-md-12.col-sm-12
+										h5.text-center
+											| CO
+											span(style='font-size: 12px;') 2
+										.progress.red(data-percentage='81')
+											span.progress-left
+												span.progress-bar(style='border-color: red;')
+											span.progress-right
+												span.progress-bar(style='border-color: red;')
+											.progress-value
+												div
+													p Bon
+									.col-lg-6.col-md-12.col-sm-12
+										h5.text-center
+											| O
+											span(style='font-size: 12px;') 2
+										.progress(data-percentage='81')
+											span.progress-left
+												span.progress-bar(style='border-color: blue;')
+											span.progress-right
+												span.progress-bar(style='border-color: blue;')
+											.progress-value
+												div
+													p Bon
+			section#actions
+				.row
+					.col
+						.card
+							.card-header
+								| Actions
+							.card-body
+								.row
+									.col.action
+										a.btn.btn-dark(href='#') Ouvrir la serre
+									.col.action
+										a.btn.btn-dark(href='#') Activer le système d'arrosage
+									.col.action
+										a.btn.btn-dark(href='#') Allumer la lampe
+			section#plan
+				.row
+					.col
+						.card
+							.card-header
+								| Plan de la serre
+							.card-body
+								.row
+									.col-lg-6.col-md-12.col-sm-12.space
+										.card
+											.card-header
+												| Compartiment #1
+											.card-body
+												.row
+													.col
+														.alert.alert-success(role='alert')
+															| Bonne condition
+														form.typeOfPlante
+															.form-group
+																label(for='typeOfPlante1') Type de plante
+																select#typeOfPlante1.form-control(name='typeOfPlante')
+																	option Tomates
+															.form-group
+																button.btn.btn-dark(type='submit') Changer
+									.col-lg-6.col-md-12.col-sm-12
+										.card
+											.card-header
+												| Compartiment #2
+											.card-body
+												.row
+													.col
+														.alert.alert-success(role='alert')
+															| Bonne condition
+														form.typeOfPlante
+															.form-group
+																label(for='typeOfPlante2') Type de plante
+																select#typeOfPlante2.form-control(name='typeOfPlante')
+																	option Tomates
+															.form-group
+																button.btn.btn-dark(type='submit') Changer
+									.col-lg-6.col-md-12.col-sm-12.space
+										.card
+											.card-header
+												| Compartiment #3
+											.card-body
+												.row
+													.col
+														.alert.alert-warning(role='alert')
+															| Condition a surveiller
+														form.typeOfPlante
+															.form-group
+																label(for='typeOfPlante3') Type de plante
+																select#typeOfPlante3.form-control(name='typeOfPlante')
+																	option Tomates
+															.form-group
+																button.btn.btn-dark(type='submit') Changer
+									.col-lg-6.col-md-12.col-sm-12
+										.card
+											.card-header
+												| Compartiment #4
+											.card-body
+												.row
+													.col
+														.alert.alert-danger(role='alert')
+															| Mauvaise condition
+														form.typeOfPlante
+															.form-group
+																label(for='typeOfPlante4') Type de plante
+																select#typeOfPlante4.form-control(name='typeOfPlante')
+																	option Tomates
+															.form-group
+																button.btn.btn-dark(type='submit') Changer
+		hr
+		.footer
+			p.mt-5.mb-3.text-muted.text-center Projet SI - 2018-2019
+		script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+		script(src='./assets/js/bootstrap.min.js')
