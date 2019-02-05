@@ -1,4 +1,4 @@
-import { RouterBuilder, UrlType } from './../builders/Express'
+import { RouterBuilder, UrlType } from './../commons/Express'
 import * as Express from 'express'
 
 module Route {
