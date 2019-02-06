@@ -3,7 +3,9 @@ import { debugExpress } from '../App'
 import { indexRouter } from '../routers/Index'
 
 import * as express from 'express'
+import * as passport from 'passport'
 import * as path from 'path'
+import { } from 'connect-flash'
 
 export class ManagerSite extends ExpressBuilder {
 
@@ -16,9 +18,24 @@ export class ManagerSite extends ExpressBuilder {
     }
 
     public registerLib() {
-        this.app.set('views', path.join(__dirname, './views'))
+        this.app.set('views', path.join(__dirname, './../views'))
+        this.app.set('view engine', 'pug')
 
-        this.app.use(express.static(path.join(__dirname, './static'), { maxAge: '7d' }))
+        this.app.use(express.static(path.join(__dirname, './../static'), { maxAge: '7d' }))
+
+        this.app.use(require('cookie-parser')())
+        this.app.use(require('body-parser').urlencoded({
+            extended: true
+        }));
+        this.app.use(require('express-session')({
+            secret: process.env.SESSION_SECRET,
+            resave: false,
+            saveUninitialized: false
+        }));
+        this.app.use(require('connect-flash')())
+
+        this.app.use(passport.initialize())
+        this.app.use(passport.session())
     }
 
     public registerRouter() {

@@ -7,8 +7,11 @@ html(lang='fr')
 		link(href='./assets/css/bootstrap.min.css', rel='stylesheet')
 		link(href='./assets/css/connexion.css', rel='stylesheet')
 	body.text-center
-		form.form-signin
+		form.form-signin(method='POST')
 			h1.h3.mb-3.font-weight-normal Connectez-vous pour accéder à l'interface
-			input#inputPassword.form-control(type='password', placeholder='Mot de passe', required='')
+			if typeof(errorMessage) != 'undefined'
+				.alert.alert-danger(role='alert')= errorMessage
+			input#inputPassword.form-control(type='password', placeholder='Mot de passe', name='password', required='')
+			input.form-control(type='hidden' name='username', value='admin')
 			button.btn.btn-lg.btn-dark.btn-block(type='submit') Connexion
 			p.mt-5.mb-3.text-muted Projet SI - 2018-2019

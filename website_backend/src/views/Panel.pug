@@ -22,10 +22,14 @@ html(lang='fr')
 					li.nav-item
 						a.nav-link(href='#') Alertes
 		.container
-			.row
-				.col
-					.alert.alert-danger(role='alert')
-						| Une alerte ou plusieurs alertes ont été détectés, merci de vous rendre dans la section "Alertes"
+			if typeof(successMessage) != 'undefined'
+				.row
+					.col
+						.alert.alert-success(role='alert')= successMessage
+			if typeof(errorMessage) != 'undefined'
+				.row
+					.col
+						.alert.alert-danger(role='alert')= errorMessage
 			section#informations
 				.row
 					.col

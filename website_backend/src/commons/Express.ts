@@ -37,13 +37,15 @@ export class RouterBuilder {
         this.url = url
     }
 
-    public addRoute(type: UrlType, url: string, route: any) {
+    public addRoute(type: UrlType, url: string, route: any, passport?: any) {
         switch (type) {
             case UrlType.GET:
-                this.router.get(url, route)
+                if (!passport) this.router.get(url, route)
+                if (passport) this.router.get(url, passport, route)
                 break
             case UrlType.POST:
-                this.router.post(url, route)
+                if (!passport) this.router.post(url, route)
+                if (passport) this.router.post(url, passport, route)
                 break
         }
     }
