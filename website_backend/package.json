@@ -23,6 +23,7 @@
     "@types/express-flash": "0.0.0",
     "@types/express-session": "^1.15.11",
     "@types/jsonwebtoken": "^8.3.0",
+    "@types/node": "^10.12.23",
     "@types/passport": "^1.0.0",
     "@types/passport-jwt": "^3.0.1",
     "@types/passport-local": "^1.0.33",
@@ -42,5 +43,8 @@
     "passport-local": "^1.0.0",
     "pug": "^2.0.3",
     "sha256": "^0.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.3.3"
   }
 }

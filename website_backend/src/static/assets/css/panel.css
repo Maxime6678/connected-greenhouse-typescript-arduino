@@ -21,6 +21,16 @@ form.typeOfPlante button {
   margin-top: 20px !important;
 }
 
+body {
+  background-color: #FFFFFF;
+}
+
+.card {
+  -webkit-box-shadow: 9px 9px 5px -6px rgba(0,0,0,0.22);
+  -moz-box-shadow: 9px 9px 5px -6px rgba(0,0,0,0.22);
+  box-shadow: 9px 9px 5px -6px rgba(0,0,0,0.22);
+}
+
 .progress {
   width: 150px;
   height: 150px;
