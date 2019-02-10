@@ -1,1 +1,2 @@
-* linguist-vendored
+website_frontend/* linguist-vendored
+website_backend/src/static/* linguist-vendored
