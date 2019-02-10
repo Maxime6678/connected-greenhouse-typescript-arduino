@@ -3,15 +3,16 @@ A site for a connected greenhouse and communication between program and Arduino 
 
 ### This project is grouped under different folders:
 
-#### `website` 
+#### [`website_frontend`](./website_frontend) [`website_backend`](./website_backend) 
 
-Find the site that allows you to manage the greenhouse remotely on any device
+Find the site that allows you to manage the greenhouse remotely on any 
+device
 
-#### `arduino`
+#### [`arduino`](./arduino)
 
 Find the program of the arduino board
 
-#### `communication`
+#### [`communication`](./communication)
 
 Find the program that allows the connection between the site and the arduino board
 
