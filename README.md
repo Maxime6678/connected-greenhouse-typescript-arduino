@@ -6,7 +6,7 @@ A site for a connected greenhouse and communication between program and Arduino 
 #### [`website_frontend`](./website_frontend) [`website_backend`](./website_backend) 
 
 Find the site that allows you to manage the greenhouse remotely on any 
-device
+devices
 
 #### [`arduino`](./arduino)
 
