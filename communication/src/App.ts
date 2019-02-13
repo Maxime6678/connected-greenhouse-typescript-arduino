@@ -1,12 +1,24 @@
 import * as SerialPort from 'SerialPort'
 import * as Readline from '@serialport/parser-readline'
+import { ConnectorSocket, InitEvent } from './classes/Connector'
 
-let portName: string = null
+import * as debug from 'debug'
+
+// Register lib
+export var executedRequest: Array<string> = new Array<string>()
+export const debugSocket = debug('socket')
+
+// Register socket
+export const connectorSocket = new ConnectorSocket(5000)
+connectorSocket.registerEvent('init', new InitEvent())
+
+// Listen socket
+connectorSocket.listen()
+
+/* let portName: string = null
 let port: SerialPort
 let interval
 let parser
-
-console.log('started')
 
 SerialPort.list()
     .then(ports => {
@@ -29,4 +41,4 @@ interval = setInterval(() => {
         parser.on('data', console.log)
         clearInterval(interval)
     }
-}, 1000)
+}, 1000) */

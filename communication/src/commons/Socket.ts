@@ -74,7 +74,7 @@ export abstract class SocketBuilder {
     public listen(): void {
         this.io.on('connection', (socket: Socket.Socket) => {
             this.events.forEach((event: EventBuilder, key: string) => {
-                socket.on(key, event.execute(this.io))
+                socket.on(key, event.execute(this.io, socket))
             })
         })
         this.io.listen(this.port)
@@ -119,6 +119,6 @@ export abstract class EventBuilder {
      * @returns {(...args: any[]) => void} Return the function that the event must execute
      * @memberof EventBuilder
      */
-    public abstract execute(io: Socket.Server): (...args: any[]) => void
+    public abstract execute(io: Socket.Server, client: Socket.Socket): (...args: any[]) => void
 
 }
