@@ -33,7 +33,10 @@ export class InitEvent extends EventBuilder {
                 debugSocket('client init %o %o', state, client.id)
                 stateToUser.set(state, client)
                 userToState.set(client, state)
-            } else client.disconnect()
+            } else {
+                debugSocket('close 1')
+                return client.disconnect()
+            }
         }
     }
 
@@ -42,18 +45,26 @@ export class InitEvent extends EventBuilder {
 export class InfoEvent extends EventBuilder {
 
     public execute(io: Server, client: Socket) {
-        return (type) => {
-            if (!userToState.has(client)) return client.disconnect()
-            debugSocket('info %o from %o', type, userToState.get(client))
-            switch (type) {
+        return async (id: string, data: string) => {
+            if (!userToState.has(client)) {
+                debugSocket('close 2')
+                return client.disconnect()
+            }
+            debugSocket('info %o from %o', data[0], userToState.get(client))
+            switch (data[0]) {
                 case 'temp': {
                     executedRequest.push('temp:' + client.id)
+                    await delay(1000)
+                    client.emit('callback', id, '28')
                     // Serial todo
+                    break
                 }
                 // ect ...
 
                 case 'default': {
+                    debugSocket('close 3')
                     client.disconnect()
+                    break
                 }
             }
         }
@@ -81,4 +92,8 @@ export class StatusEvent extends EventBuilder {
         }
     }
 
+}
+
+async function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

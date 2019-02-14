@@ -5,13 +5,22 @@ export abstract class SocketClientConstructor {
     public readonly socket: SocketIOClient.Socket
 
     constructor(url: string) {
-        this.socket = socket(url)
+        this.socket = socket(url, {
+            reconnection: true,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
+            reconnectionAttempts: Infinity
+        })
         this.socket.on('connect', this.onConnect(this.socket))
         this.socket.on('disconnect', this.onDisconnect(this.socket))
     }
 
     public registerEvent(name: string, event: EventBuilder) {
         this.socket.on(name, event.execute(this.socket))
+    }
+
+    public emit(name: string, ...args: string[]) {
+        this.socket.emit(name, args)
     }
 
     public abstract onConnect(socket: SocketIOClient.Socket): (...args: any[]) => void

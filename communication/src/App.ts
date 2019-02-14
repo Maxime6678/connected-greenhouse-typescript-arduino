@@ -1,16 +1,19 @@
 import * as SerialPort from 'SerialPort'
 import * as Readline from '@serialport/parser-readline'
-import { ConnectorSocket, InitEvent } from './classes/Connector'
+import { ConnectorSocket, InitEvent, InfoEvent } from './classes/Connector'
 
 import * as debug from 'debug'
 
-// Register lib
+// Register variable
 export var executedRequest: Array<string> = new Array<string>()
+
+// Register lib
 export const debugSocket = debug('socket')
 
 // Register socket
 export const connectorSocket = new ConnectorSocket(5000)
 connectorSocket.registerEvent('init', new InitEvent())
+connectorSocket.registerEvent('info', new InfoEvent())
 
 // Listen socket
 connectorSocket.listen()

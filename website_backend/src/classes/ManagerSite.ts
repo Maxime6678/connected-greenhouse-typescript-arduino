@@ -1,6 +1,7 @@
 import { ExpressBuilder } from './../commons/Express'
 import { debugExpress } from '../App'
 import { indexRouter } from '../routers/Index'
+import { apiRouter } from '../routers/Api'
 
 import * as express from 'express'
 import * as passport from 'passport'
@@ -33,6 +34,7 @@ export class ManagerSite extends ExpressBuilder {
             saveUninitialized: false
         }));
         this.app.use(require('connect-flash')())
+        this.app.use(require('cors')())
 
         this.app.use(passport.initialize())
         this.app.use(passport.session())
@@ -40,6 +42,7 @@ export class ManagerSite extends ExpressBuilder {
 
     public registerRouter() {
         this.app.use(indexRouter.url, indexRouter.router)
+        this.app.use(apiRouter.url, apiRouter.router)
     }
 
 }

@@ -1,5 +1,5 @@
-import { SocketClientConstructor } from '../commons/SocketClient'
-import { debugSocket } from '../App';
+import { SocketClientConstructor, EventBuilder } from '../commons/SocketClient'
+import { debugSocket, waitingRequest, executedRequest } from '../App'
 
 export class ClientSocket extends SocketClientConstructor {
 
@@ -17,6 +17,19 @@ export class ClientSocket extends SocketClientConstructor {
     public onDisconnect(socket: SocketIOClient.Socket) {
         return () => {
             debugSocket('disconnect from master')
+        }
+    }
+
+}
+
+export class CallbackEvent extends EventBuilder {
+
+    public execute(socket: SocketIOClient.Socket) {
+        return (id: string, data: string) => {
+            if (waitingRequest.has(id)) {
+                waitingRequest.set(id, null)
+                executedRequest.set(id, data)
+            }
         }
     }
 
