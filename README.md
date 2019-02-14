@@ -1,5 +1,5 @@
 # Connected greenhouse with NodeJS/TypeScript/Arduino
-A site for a connected greenhouse and communication between program and Arduino board. Made in France with ❤
+A connected greenhouse containing a website for panel and communication between Arduino and TypeScript. Made in France with ❤
 
 ### This project is grouped under different folders:
 
