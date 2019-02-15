@@ -5,21 +5,20 @@ import { ConnectorSocket, InitEvent, InfoEvent } from './classes/Connector'
 import * as debug from 'debug'
 
 // Register variable
-export var executedRequest: Array<string> = new Array<string>()
+export var waitingRequest: Map<string, string> = new Map<string, string>()
+export var executedRequest: Map<string, string> = new Map<string, string>()
 
 // Register lib
 export const debugSocket = debug('socket')
+export const debugSerial = debug('serial')
 
 // Register socket
 export const connectorSocket = new ConnectorSocket(5000)
 connectorSocket.registerEvent('init', new InitEvent())
 connectorSocket.registerEvent('info', new InfoEvent())
 
-// Listen socket
-connectorSocket.listen()
-
-/* let portName: string = null
-let port: SerialPort
+let portName: string = null
+export let port: SerialPort
 let interval
 let parser
 
@@ -31,7 +30,7 @@ SerialPort.list()
             process.exit(1)
         }
         portName = find.comName
-        console.log('find: ' + portName)
+        debugSerial('found arduino on %o', portName)
     })
 
 interval = setInterval(() => {
@@ -40,8 +39,13 @@ interval = setInterval(() => {
             baudRate: 9600
         })
         parser = port.pipe(new Readline({ delimiter: '\r\n' }))
-        console.log('connected')
-        parser.on('data', console.log)
+        debugSerial('connected')
+        connectorSocket.listen()
+        parser.on('data', (data: string) => {
+            let dataParse = data.split(':')
+            if (dataParse.length == 1) return
+            executedRequest.set(dataParse[0], dataParse[1])
+        })
         clearInterval(interval)
     }
-}, 1000) */
+}, 1000)

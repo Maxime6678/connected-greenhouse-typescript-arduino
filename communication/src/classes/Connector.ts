@@ -1,6 +1,7 @@
 import { SocketBuilder, EventBuilder } from '../commons/Socket'
 import { debugSocket, executedRequest } from '../App'
 import { Server, Socket } from 'socket.io'
+import { createRequest, generateId } from '../utils/Request';
 
 export var stateToUser: Map<string, Socket> = new Map<string, Socket>()
 export var userToState: Map<Socket, string> = new Map<Socket, string>()
@@ -50,16 +51,39 @@ export class InfoEvent extends EventBuilder {
                 debugSocket('close 2')
                 return client.disconnect()
             }
-            debugSocket('info %o from %o', data[0], userToState.get(client))
+
             switch (data[0]) {
                 case 'temp': {
-                    executedRequest.push('temp:' + client.id)
-                    await delay(1000)
-                    client.emit('callback', id, '28')
-                    // Serial todo
+                    let idReq = generateId()
+                    createRequest('temp', idReq).then((data: string) => {
+                        client.emit('callback', id, data)
+                    })
                     break
                 }
-                // ect ...
+
+                case 'hum': {
+                    let idReq = generateId()
+                    createRequest('hum', idReq).then((data: string) => {
+                        client.emit('callback', id, data)
+                    })
+                    break
+                }
+
+                case 'all': {
+                    let idReq = generateId()
+                    createRequest('all', idReq).then((data: string) => {
+                        client.emit('callback', id, data)
+                    })
+                    break
+                }
+
+                case 'lux': {
+                    let idReq = generateId()
+                    createRequest('lux', idReq).then((data: string) => {
+                        client.emit('callback', id, data)
+                    })
+                    break
+                }
 
                 case 'default': {
                     debugSocket('close 3')
@@ -92,8 +116,4 @@ export class StatusEvent extends EventBuilder {
         }
     }
 
-}
-
-async function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }

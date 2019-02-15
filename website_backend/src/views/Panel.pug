@@ -40,24 +40,24 @@ html(lang='fr')
 								.row
 									.col-lg-4.col-md-12.col-sm-12
 										h5.text-center Température
-										.progress(data-percentage='43')
+										.progress(data-percentage='00')#temp_bar
 											span.progress-left
 												span.progress-bar(style='border-color: orange;')
 											span.progress-right
 												span.progress-bar(style='border-color: orange;')
 											.progress-value
 												div
-													p#temp_val 22°C
+													p#temp_val ...
 									.col-lg-4.col-md-12.col-sm-12
 										h5.text-center Humidité
-										.progress(data-percentage='52')
+										.progress(data-percentage='00')#hum_bar
 											span.progress-left
 												span.progress-bar(style='border-color: yellow;')
 											span.progress-right
 												span.progress-bar(style='border-color: yellow;')
 											.progress-value
 												div
-													p 52%
+													p#hum_val ...
 									.col-lg-4.col-md-12.col-sm-12
 										h5.text-center Eclairage
 										.progress(data-percentage='81')
@@ -67,7 +67,7 @@ html(lang='fr')
 												span.progress-bar(style='border-color: yellow;')
 											.progress-value
 												div
-													p Bon
+													p#lux_val ...
 					.col
 						.card
 							.card-header

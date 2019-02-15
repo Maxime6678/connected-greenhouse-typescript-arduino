@@ -10,7 +10,7 @@ export class ClientSocket extends SocketClientConstructor {
     public onConnect(socket: SocketIOClient.Socket) {
         return () => {
             debugSocket('connected to master')
-            socket.emit('init', '_website', process.env.SOCKET_PASSWORD)
+            socket.emit('init', '_website', process.env.SOCKET_SECRET)
         }
     }
 

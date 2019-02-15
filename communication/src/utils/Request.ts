@@ -1,13 +1,13 @@
-import { waitingRequest, clientSocket, executedRequest, debugSocket } from '../App'
+import { waitingRequest, executedRequest, port, debugSocket, debugSerial } from '../App'
 
-export function createRequest(name: string, id: string, ...args: string[]): Promise<string> {
+export function createRequest(name: string, id: string): Promise<string> {
     waitingRequest.set(id, name)
-    debugSocket('emit %o with id %o and %o', name, id, args)
-    clientSocket.socket.emit(name, id, args)
+    debugSerial('send: %o', name + ':' + id)
+    port.write(name + ':' + id)
     return new Promise<string>(async (resolve) => {
         while (true) {
             if (executedRequest.has(id)) {
-                debugSocket('received: %o with %o', id, executedRequest.get(id))
+                debugSerial('found request: %o with %o', id, executedRequest.get(id))
                 resolve(executedRequest.get(id))
                 break
             }
