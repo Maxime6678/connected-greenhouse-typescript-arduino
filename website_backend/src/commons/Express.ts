@@ -1,5 +1,10 @@
 import * as Express from 'express'
 
+
+export const asyncMiddleware = fn => (req, res, next) => {
+    Promise.resolve(fn(req, res, next)).catch(next)
+}
+
 export abstract class ExpressBuilder {
 
     public readonly app: Express.Application

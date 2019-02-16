@@ -1,22 +1,18 @@
-import { waitingRequest, executedRequest, debugRedis, redisClient } from '../App'
+import { waitingRequest, executedRequest, port, debugSerial } from '../App'
 
 export function createRequest(name: string, id: string): Promise<string> {
     return new Promise<string>((resolve) => {
         waitingRequest.set(id, name)
-        debugRedis('send request %o, get %o', id, name)
+        debugSerial('send request %o, get %o', id, name)
 
-        redisClient.instance.publish('request', JSON.stringify({
-            secret: process.env.REDIS_SECRET,
-            id: id,
-            need: name
-        }))
+        if (process.env.FAKE_ARDUINO == 'false') port.write(name + ':' + id)
+        else executedRequest.set(id, name != 'all' ? Math.floor(Math.random() * 100) + '' : Math.floor(Math.random() * 100) + '@' + Math.floor(Math.random() * 100) + '@' + Math.floor(Math.random() * 100))
 
         let interval
         interval = setInterval(async () => {
             if (executedRequest.has(id)) {
                 clearInterval(interval)
-                debugRedis('finish request %o, value %o', id, executedRequest.get(id))
-                await delay(1000)
+                debugSerial('finish request %o, value %o', id, executedRequest.get(id))
                 resolve(executedRequest.get(id))
                 executedRequest.set(id, null)
             }
@@ -34,8 +30,4 @@ export function generateId(): string {
     } while (waitingRequest.has(result) || executedRequest.has(result))
 
     return result
-}
-
-async function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }

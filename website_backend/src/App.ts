@@ -1,6 +1,8 @@
 import { ManagerSite } from './classes/ManagerSite'
+import { RedisClient, EndEvent, CallbackSubscribe } from './classes/ConnectorRedis'
+import { RedisClientType } from './commons/Redis'
+
 import * as debug from 'debug'
-import { ClientSocket, CallbackEvent } from './classes/Connector'
 
 // Register variable
 export var haveError: boolean = false
@@ -11,13 +13,17 @@ export var executedRequest: Map<string, string> = new Map<string, string>()
 // Register libs
 export const Passport = require('./utils/Passport')
 export const debugExpress = debug('express')
-export const debugSocket = debug('socket')
+export const debugRedis = debug('redis')
 
 // Register site
 export const managerSite = new ManagerSite(3000, true)
 
-// Register socket client
-export const clientSocket = new ClientSocket('http://127.0.0.1:5000')
+// Register redis
+export const redisClient = new RedisClient(RedisClientType.NORMAL, process.env.REDIS_HOST, process.env.REDIS_PASSWORD, Number(process.env.REDIS_PORT), 5, 'GH_Website')
+redisClient.registerEvent('end', new EndEvent())
+redisClient.connect()
 
-// Register event
-clientSocket.registerEvent('callback', new CallbackEvent())
+export const redisSubscribe = new RedisClient(RedisClientType.SUBSCRIBER, process.env.REDIS_HOST, process.env.REDIS_PASSWORD, Number(process.env.REDIS_PORT), 5, 'GH_Website_SUB')
+redisSubscribe.registerSubscribe('callback', new CallbackSubscribe())
+redisSubscribe.registerEvent('end', new EndEvent())
+redisSubscribe.connect()

@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.ajax({
         type: "GET",
-        url: "http://127.0.0.1:3000/api/info/all",
+        url: window.location.origin + "/api/info/all",
         success: function (data) {
             let parse = data.value.split('@')
             $('#temp_bar').attr('data-percentage', parseInt(parse[0]))
@@ -20,7 +20,7 @@ $(document).ready(function () {
     setInterval(() => {
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:3000/api/info/all",
+            url: window.location.origin + "/api/info/all",
             success: function (data) {
                 let parse = data.value.split('@')
                 $('#temp_bar').attr('data-percentage', parseInt(parse[0]))
