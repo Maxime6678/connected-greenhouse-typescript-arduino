@@ -12,9 +12,9 @@ devices
 
 Find the program of the arduino board
 
-#### [`communication`](./communication)
+#### [`controller`](./controller)
 
-Find the program that allows the connection between the site and the arduino board
+Find the program that allows the connection between the site and the arduino board and managing the greenhouse
 
 ### Screenshots
 
