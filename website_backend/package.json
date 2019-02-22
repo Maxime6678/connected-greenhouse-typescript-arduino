@@ -51,6 +51,6 @@
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
-    "typescript": "^3.3.3"
+    "typescript": "^3.3.3333"
   }
 }

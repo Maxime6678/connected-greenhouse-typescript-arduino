@@ -18,11 +18,13 @@
   },
   "homepage": "https://github.com/Maxime6678/projet-si-terminale#readme",
   "dependencies": {
+    "@types/dateformat": "^3.0.0",
     "@types/debug": "0.0.31",
     "@types/ioredis": "^4.0.6",
     "@types/serialport": "^7.0.1",
     "@types/socket.io": "^2.1.2",
     "@types/socket.io-client": "^1.4.32",
+    "dateformat": "^3.0.3",
     "debug": "^4.1.1",
     "dotenv": "^6.2.0",
     "ioredis": "^4.6.2",
