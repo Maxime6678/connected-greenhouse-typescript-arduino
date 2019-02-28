@@ -23,3 +23,6 @@ Find the program that allows the connection between the site and the arduino boa
 
 #### Panel page
 ![Login page](./screenshots/panel_v1.png)
+
+#### Chart page
+![Login page](./screenshots/chart_v1.png)
