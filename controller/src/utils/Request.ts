@@ -1,12 +1,14 @@
 import { waitingRequest, executedRequest, port, debugSerial } from '../App'
 
+var baseTemp = 20, baseHum = 60, baseLux = 80
+
 export function createRequest(name: string, id: string): Promise<string> {
     return new Promise<string>((resolve) => {
         waitingRequest.set(id, name)
         debugSerial('send request %o, get %o', id, name)
 
         if (process.env.FAKE_ARDUINO == 'false') port.write(name + ':' + id)
-        else executedRequest.set(id, name != 'all' ? Math.floor(Math.random() * 100) + '' : Math.floor(Math.random() * 100) + '@' + Math.floor(Math.random() * 100) + '@' + Math.floor(Math.random() * 100))
+        else executedRequest.set(id, name != 'all' ? Math.floor(Math.random() * 100) + '' : getFake(baseTemp) + '@' + getFake(baseHum) + '@' + getFake(baseLux))
 
         let interval
         interval = setInterval(async () => {
@@ -30,4 +32,14 @@ export function generateId(): string {
     } while (waitingRequest.has(result) || executedRequest.has(result))
 
     return result
+}
+
+function getFake(data: number) {
+    if (getRandomInt(2)) data += getRandomInt(2)
+    else data -= getRandomInt(6)
+    return data
+}
+
+export function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
 }

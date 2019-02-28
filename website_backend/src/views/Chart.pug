@@ -1,0 +1,58 @@
+doctype html
+html(lang='fr')
+	head
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+		title Interface · Mini-Serre
+		link(href='./assets/css/bootstrap.min.css', rel='stylesheet')
+		link(href='./assets/css/chart.css', rel='stylesheet')
+	body
+		nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+			a.navbar-brand(href='#') Mini-Serre
+			button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
+				span.navbar-toggler-icon
+			#navbarNav.collapse.navbar-collapse
+				ul.navbar-nav
+					li.nav-item
+						a.nav-link(href='/') Résumé
+					li.nav-item.active
+						a.nav-link(href='/chart') Statistique
+		.container
+			.row.center-div
+				form#chartForm
+					.form-row.align-items-center
+						.col-auto.my-1
+							label.mr-sm-2.sr-only(for='inlineFormCustomSelect') Date
+							select#date.custom-select.mr-sm-2(name='date', onchange='editChart()')
+								for item in daySelect
+									if (item.isCurrent)
+										option(value=item.value, selected='')= item.text
+									else
+										option(value=item.value)= item.text
+						.col-auto.my-1
+							label.mr-sm-2.sr-only(for='inlineFormCustomSelect') Heure
+							select#hour.custom-select.mr-sm-2(name='hour', onchange='editChart()')
+								for item in hourSelect
+									if (item.isCurrent)
+										option(value=item.value, selected='')= item.text
+									else
+										option(value=item.value)= item.text
+						.col-auto.my-1
+							label.mr-sm-2.sr-only(for='inlineFormCustomSelect') Limite
+							select#limite.custom-select.mr-sm-2(name='limite', onchange='editChart()')
+								option(value='1') Pendant 1h
+								option(value='2', selected='') Pendant 2h
+								option(value='5') Pendant 5h
+								option(value='10') Pendant 10h
+								option(value='24') Pendant 1j
+			#showDiv.row
+				canvas#chart
+		hr
+		.footer
+			p.mt-5.mb-3.text-muted.text-center Projet SI - 2018-2019
+		script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+		script(src='./assets/js/bootstrap.min.js')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js')
+		script(src='./assets/js/chart.js')
+		script.
+			showChart(#{actualDate}, #{actualHour}, #{actualLimite})

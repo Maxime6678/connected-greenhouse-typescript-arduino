@@ -23,7 +23,7 @@ redisSubscribe.registerSubscribe('request', new RequestSubscribe())
 redisSubscribe.registerEvent('end', new EndEvent())
 
 // Register control
-export const control = new Control(redisClient, 5 * 1000)
+export const control = new Control(redisClient, 30 * 1000)
 
 // Register serial
 let portName: string = null

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Interface · Mini-Serre</title>
+
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/css/chart.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Mini-Serre</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Résumé</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/chart">Statistique</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row center-div">
+            <form id="chartForm">
+                <div class="form-row align-items-center">
+                    <div class="col-auto my-1">
+                        <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Date</label>
+                        <select class="custom-select mr-sm-2" id="date" name="date" onchange="editChart()">
+                            <option value="270219" selected>27/02/2019</option>
+                            <option value="260219">26/02/2019</option>
+                            <option value="250219">25/02/2019</option>
+                            <option value="240219">24/02/2019</option>
+                        </select>
+                    </div>
+                    <div class="col-auto my-1">
+                        <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Heure</label>
+                        <select class="custom-select mr-sm-2" id="hour" name="hour" onchange="editChart()">
+                            <option value="00">00h</option>
+                            <option value="01">01h</option>
+                            <option value="02">02h</option>
+                            <option value="03">03h</option>
+                            <option value="04">04h</option>
+                            <option value="05">05h</option>
+                            <option value="06">06h</option>
+                            <option value="07">07h</option>
+                            <option value="08">08h</option>
+                            <option value="09">09h</option>
+                            <option value="10">10h</option>
+                            <option value="11" selected>11h</option>
+                            <option value="12">12h</option>
+                            <option value="13">13h</option>
+                            <option value="14">14h</option>
+                            <option value="15">15h</option>
+                            <option value="16">16h</option>
+                            <option value="17">17h</option>
+                            <option value="18">18h</option>
+                            <option value="19">19h</option>
+                            <option value="20">20h</option>
+                            <option value="21">21h</option>
+                            <option value="22">22h</option>
+                            <option value="23">23h</option>
+                        </select>
+                    </div>
+                    <div class="col-auto my-1">
+                        <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Limite</label>
+                        <select class="custom-select mr-sm-2" id="limite" name="limite" onchange="editChart()">
+                            <option value="1" selected>Pendant 1h</option>
+                            <option value="2">Pendant 2h</option>
+                            <option value="5">Pendant 5h</option>
+                            <option value="10">Pendant 10h</option>
+                            <option value="24">Pendant 1j</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row" id="showDiv">
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+
+    <hr>
+    <div class="footer">
+        <p class="mt-5 mb-3 text-muted text-center">Projet SI - 2018-2019</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+    <script src="./assets/js/chart.js"></script>
+
+    <script>
+        showChart('260219', '23', '1')
+    </script>
+
+</body>
+
+</html>

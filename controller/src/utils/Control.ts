@@ -12,12 +12,17 @@ export class Control {
     constructor(instance: RedisBuilder, refresh: number) {
         this.instance = instance
         this.refresh = refresh
-        let interval = setInterval(() => {
-            if (dateFormat(new Date(), 'ss') == '59') {
-                setInterval(() => this.check(), refresh)
-                clearInterval(interval)
+        let isPast = true
+        setInterval(() => {
+            let minute = parseInt(dateFormat(new Date(), 'MM').split('')[dateFormat(new Date(), 'MM').split('').length - 1])
+            if (minute % 5 == 0) {
+                let p = minute == 0 ? true : false
+                if (p != isPast) {
+                    isPast = !isPast
+                    this.check()
+                }
             }
-        }, 100)
+        }, this.refresh)
     }
 
     private check(): void {
@@ -37,10 +42,10 @@ export class Control {
             this.getDate((err, res) => {
                 let parse = JSON.parse(res)
                 let newData = {
-                    date: dateFormat(new Date(), 'dd"/"mm"/"yyyy hh:MM:ss'),
+                    date: dateFormat(new Date(), 'UTC:yyyy-mm-dd"T"HH:MM:ss"Z"'),
                     data: data
                 }
-                parse[dateFormat(new Date(), 'hh:MM:ss')] = newData
+                parse.push(newData)
                 this.instance.set('schedule:' + dateFormat(new Date(), 'ddmmyy'), JSON.stringify(parse))
             })
         })
@@ -53,7 +58,7 @@ export class Control {
     }
 
     private createDate(): void {
-        this.instance.set('schedule:' + dateFormat(new Date(), 'ddmmyy'), '{}')
+        this.instance.set('schedule:' + dateFormat(new Date(), 'ddmmyy'), '[]')
     }
 
     private getDate(callback: (err: Error, res: string) => void): void {

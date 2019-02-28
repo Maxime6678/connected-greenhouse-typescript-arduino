@@ -1,8 +1,10 @@
 import { RouterBuilder, UrlType } from './../commons/Express'
+import { haveError } from '../App'
+import { getHourSelect, getDaySelect } from '../utils/Parser'
 
 import * as Express from 'express'
 import * as passport from 'passport'
-import { haveError } from '../App';
+import * as dateFormat from 'dateformat'
 
 module Route {
 
@@ -13,6 +15,16 @@ module Route {
 
     export function Login(req: Express.Request, res: Express.Response, next: Express.NextFunction) {
         res.render('login')
+    }
+
+    export function Chart(req: Express.Request, res: Express.Response, next: Express.NextFunction) {
+        res.render('chart', {
+            actualDate: dateFormat(new Date(), 'ddmmyy'),
+            actualHour: parseInt(dateFormat(new Date(), 'HH')) - 1,
+            actualLimite: 2,
+            hourSelect: getHourSelect(),
+            daySelect: getDaySelect()
+        })
     }
 
     export function LoginPost(req: Express.Request, res: Express.Response, next: Express.NextFunction) {
@@ -34,6 +46,7 @@ module Route {
 
 let router = new RouterBuilder('/')
 router.addRoute(UrlType.GET, '/', Route.Index, require('connect-ensure-login').ensureLoggedIn())
+router.addRoute(UrlType.GET, '/chart', Route.Chart, require('connect-ensure-login').ensureLoggedIn())
 router.addRoute(UrlType.GET, '/login', Route.Login)
 router.addRoute(UrlType.POST, '/login', Route.LoginPost)
 
