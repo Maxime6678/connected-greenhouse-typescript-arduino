@@ -62,14 +62,14 @@ export function getValuesGraph(date: string, hour: number, limite: number, callb
                         val1 = data.filter(x => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date1Day + "-" + (hour + i) + ':' + j + '0')[0]
                         if (!val1) val1 = {
                             date: null,
-                            data: 'null@null@null'
+                            data: '0@0@0'
                         }
 
                         // For XX:X5
                         val2 = data.filter(x => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date1Day + "-" + (hour + i) + ':' + j + '5')[0]
                         if (!val2) val2 = {
                             date: null,
-                            data: 'null@null@null'
+                            data: '0@0@0'
                         }
 
                         values.push({
@@ -92,14 +92,14 @@ export function getValuesGraph(date: string, hour: number, limite: number, callb
                         val1 = data.filter(x => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date2Day + "-" + (i) + ':' + j + '0')[0]
                         if (!val1) val1 = {
                             date: null,
-                            data: 'null@null@null'
+                            data: '0@0@0'
                         }
 
                         // For XX:X5
                         val2 = data.filter(x => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date2Day + "-" + (i) + ':' + j + '5')[0]
                         if (!val2) val2 = {
                             date: null,
-                            data: 'null@null@null'
+                            data: '0@0@0'
                         }
 
                         values.push({
