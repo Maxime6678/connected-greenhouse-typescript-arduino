@@ -1,7 +1,7 @@
 import { RedisClient, EndEvent, RequestSubscribe } from './classes/ConnectorRedis'
 import { RedisClientType } from './commons/Redis'
 
-import * as SerialPort from 'SerialPort'
+import * as SerialPort from 'serialport'
 import * as Readline from '@serialport/parser-readline'
 import * as debug from 'debug'
 import { Control } from './utils/Control';
