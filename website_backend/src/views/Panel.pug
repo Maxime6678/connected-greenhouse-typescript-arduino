@@ -125,11 +125,16 @@ html(lang='fr')
 													.col
 														.alert.alert-success(role='alert')
 															| Bonne condition
-														form.typeOfPlante
+														form.typeOfPlante(action='/change')
 															.form-group
 																label(for='typeOfPlante1') Type de plante
-																select#typeOfPlante1.form-control(name='typeOfPlante')
-																	option Tomates
+																select#typeOfPlante1.form-control(name='typeID')
+																	for item in compartmentList[0]
+																		if item.isCurrent
+																			option(value=item.typeID, selected='')= item.typeName
+																		else
+																			option(value=item.typeID)= item.typeName
+																input(name='compartment' type='hidden' value='1')
 															.form-group
 																button.btn.btn-dark(type='submit') Changer
 									.col-lg-6.col-md-12.col-sm-12
@@ -141,11 +146,16 @@ html(lang='fr')
 													.col
 														.alert.alert-success(role='alert')
 															| Bonne condition
-														form.typeOfPlante
+														form.typeOfPlante(action='/change')
 															.form-group
 																label(for='typeOfPlante2') Type de plante
-																select#typeOfPlante2.form-control(name='typeOfPlante')
-																	option Tomates
+																select#typeOfPlante2.form-control(name='typeID')
+																	for item in compartmentList[1]
+																		if item.isCurrent
+																			option(value=item.typeID, selected='')= item.typeName
+																		else
+																			option(value=item.typeID)= item.typeName
+																input(name='compartment' type='hidden' value='2')
 															.form-group
 																button.btn.btn-dark(type='submit') Changer
 									.col-lg-6.col-md-12.col-sm-12.space
@@ -157,11 +167,16 @@ html(lang='fr')
 													.col
 														.alert.alert-warning(role='alert')
 															| Condition a surveiller
-														form.typeOfPlante
+														form.typeOfPlante(action='/change')
 															.form-group
 																label(for='typeOfPlante3') Type de plante
-																select#typeOfPlante3.form-control(name='typeOfPlante')
-																	option Tomates
+																select#typeOfPlante3.form-control(name='typeID')
+																	for item in compartmentList[2]
+																		if item.isCurrent
+																			option(value=item.typeID, selected='')= item.typeName
+																		else
+																			option(value=item.typeID)= item.typeName
+																input(name='compartment' type='hidden' value='3')
 															.form-group
 																button.btn.btn-dark(type='submit') Changer
 									.col-lg-6.col-md-12.col-sm-12
@@ -173,11 +188,16 @@ html(lang='fr')
 													.col
 														.alert.alert-danger(role='alert')
 															| Mauvaise condition
-														form.typeOfPlante
+														form.typeOfPlante(action='/change')
 															.form-group
 																label(for='typeOfPlante4') Type de plante
-																select#typeOfPlante4.form-control(name='typeOfPlante')
-																	option Tomates
+																select#typeOfPlante4.form-control(name='typeID')
+																	for item in compartmentList[3]
+																		if item.isCurrent
+																			option(value=item.typeID, selected='')= item.typeName
+																		else
+																			option(value=item.typeID)= item.typeName
+																input(name='compartment' type='hidden' value='4')
 															.form-group
 																button.btn.btn-dark(type='submit') Changer
 		hr

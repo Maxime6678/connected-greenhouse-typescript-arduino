@@ -6,7 +6,7 @@ function editChart() {
 }
 
 function showChart(date, hour, limite) {
-    $.getJSON(`http://127.0.0.1:3000/api/graph/${date}/${hour}/${limite}`, (data) => {
+    $.getJSON(`${window.location.origin}/api/graph/${date}/${hour}/${limite}`, (data) => {
         let x = [],
             yTemp = [],
             yHum = [],

@@ -10,16 +10,18 @@ export function getValuesGraph(date: string, hour: number, limite: number, callb
             for (let i = 0; i < limite; i++) {
                 for (let j = 0; j < 6; j++) {
                     let val1, val2
+                    let filter1 = hour + i < 10 ? '0' + (hour + i) + ':' + j + '0' : (hour + 1) + ':' + j + '0'
+                    let filter2 = hour + i < 10 ? '0' + (hour + i) + ':' + j + '0' : (hour + 1) + ':' + j + '5'
 
                     // For XX:X0
-                    val1 = data.filter(x => dateFormat(new Date(x.date), 'HH":"MM') === hour + i + ':' + j + '0')[0]
+                    val1 = data.filter(x => dateFormat(new Date(x.date), 'HH":"MM') === filter1)[0]
                     if (!val1) val1 = {
                         date: null,
                         data: '0@0@0'
                     }
 
                     // For XX:X5
-                    val2 = data.filter(x => dateFormat(new Date(x.date), 'HH":"MM') === hour + i + ':' + j + '5')[0]
+                    val2 = data.filter(x => dateFormat(new Date(x.date), 'HH":"MM') === filter2)[0]
                     if (!val2) val2 = {
                         date: null,
                         data: '0@0@0'
@@ -117,6 +119,25 @@ export function getValuesGraph(date: string, hour: number, limite: number, callb
             })
         }
 
+    })
+}
+
+export function getPartList(callback: (data: any) => void): void {
+    let result = []
+    redisClient.get('_compartment', (err: Error, res: string) => {
+        let dataComp = res == null || res === undefined ? [] : JSON.parse(res)
+        redisClient.get('_types', (err: Error, res: string) => {
+            let dataTypes = res == null || res === undefined ? [] : JSON.parse(res)
+            for (let i in dataComp) {
+                let ar = []
+                for (let j in dataTypes) {
+                    if (dataTypes[j].id == dataComp[i].typeID) ar.push({ typeID: dataTypes[j].id, typeName: dataTypes[j].name, isCurrent: true })
+                    else ar.push({ typeID: dataTypes[j].id, typeName: dataTypes[j].name, isCurrent: false })
+                }
+                result.push(ar)
+            }
+            callback(result)
+        })
     })
 }
 

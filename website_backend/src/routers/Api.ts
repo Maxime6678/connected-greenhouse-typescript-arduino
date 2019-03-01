@@ -1,10 +1,8 @@
 import { RouterBuilder, UrlType, asyncMiddleware } from './../commons/Express'
 import { generateId, createRequest } from '../utils/Request'
-import { redisClient, debugRedis } from '../App'
+import { getValuesGraph } from '../utils/Parser'
 
 import * as Express from 'express'
-import * as dateFormat from 'dateFormat'
-import { getValuesGraph } from '../utils/Parser';
 
 module Route {
 
