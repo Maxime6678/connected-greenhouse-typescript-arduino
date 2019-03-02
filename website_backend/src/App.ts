@@ -14,6 +14,7 @@ export var executedRequest: Map<string, string> = new Map<string, string>()
 export const Passport = require('./utils/Passport')
 export const debugExpress = debug('express')
 export const debugRedis = debug('redis')
+export const debugPrinc = debug('debug')
 
 // Register site
 export const managerSite = new ManagerSite(3000, true)

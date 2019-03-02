@@ -2,10 +2,12 @@ function editChart() {
     let date = $('#date').val()
     let hour = $('#hour').val()
     let limite = $('#limite').val()
+    console.log(`edit ${date} ${hour} ${limite}`)
     showChart(date, hour, limite)
 }
 
 function showChart(date, hour, limite) {
+    console.log(`show ${date} ${hour} ${limite}`)
     $.getJSON(`${window.location.origin}/api/graph/${date}/${hour}/${limite}`, (data) => {
         let x = [],
             yTemp = [],
@@ -18,6 +20,9 @@ function showChart(date, hour, limite) {
             yHum.push(data[i].y.split('@')[1])
             yLux.push(data[i].y.split('@')[2])
         }
+
+        console.log(x)
+        console.log(yTemp)
 
         if (x.length != 0) {
             $('#showDiv').html('<canvas id="chart"></canvas>');

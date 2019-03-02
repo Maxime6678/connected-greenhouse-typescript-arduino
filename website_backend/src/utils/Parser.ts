@@ -1,5 +1,5 @@
 import * as dateFormat from 'dateformat'
-import { redisClient } from '../App'
+import { redisClient, debugPrinc } from '../App'
 
 export function getValuesGraph(date: string, hour: number, limite: number, callback: (res: any) => void): any {
     redisClient.get('schedule:' + date, (err: Error, res: string) => {
@@ -10,8 +10,8 @@ export function getValuesGraph(date: string, hour: number, limite: number, callb
             for (let i = 0; i < limite; i++) {
                 for (let j = 0; j < 6; j++) {
                     let val1, val2
-                    let filter1 = hour + i < 10 ? '0' + (hour + i) + ':' + j + '0' : (hour + 1) + ':' + j + '0'
-                    let filter2 = hour + i < 10 ? '0' + (hour + i) + ':' + j + '0' : (hour + 1) + ':' + j + '5'
+                    let filter1 = hour + i < 10 ? '0' + (hour + i) + ':' + j + '0' : (hour + i) + ':' + j + '0'
+                    let filter2 = hour + i < 10 ? '0' + (hour + i) + ':' + j + '0' : (hour + i) + ':' + j + '5'
 
                     // For XX:X0
                     val1 = data.filter(x => dateFormat(new Date(x.date), 'HH":"MM') === filter1)[0]

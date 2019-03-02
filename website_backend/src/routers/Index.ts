@@ -1,5 +1,5 @@
 import { RouterBuilder, UrlType } from './../commons/Express'
-import { haveError, redisSubscribe, redisClient } from '../App'
+import { haveError, debugPrinc, redisClient } from '../App'
 import { getHourSelect, getDaySelect, getPartList } from '../utils/Parser'
 
 import * as Express from 'express'
