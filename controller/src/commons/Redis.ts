@@ -1,4 +1,4 @@
-import * as Redis from 'ioredis'
+import Redis from 'ioredis'
 
 /*
  * This project is under MIT License
@@ -130,6 +130,7 @@ export abstract class RedisBuilder {
         this.port = port
         this.database = database
         this.name = name
+        this.subscribe = new Map<string, SubscribeConstructor>()
         if (type == RedisClientType.SUBSCRIBER) this.subscribe = new Map<string, SubscribeConstructor>()
         this.instance = new Redis(this.getRedisParam())
         this.instance.on('connect', () => this.onConnect(this.instance))
@@ -137,7 +138,7 @@ export abstract class RedisBuilder {
         this.instance.on('error', (err: string) => this.onError(this.instance, err))
         if (this.type == RedisClientType.SUBSCRIBER) {
             this.instance.on('message', (channel: string, data: string) => {
-                if (this.subscribe.has(channel)) this.subscribe.get(channel).execute(this.instance, data)
+                if (this.subscribe.has(channel)) (this.subscribe.get(channel) as SubscribeConstructor).execute(this.instance, data)
             })
         }
     }
@@ -189,7 +190,7 @@ export abstract class RedisBuilder {
      * @param {((err: Error, res: string | null) => void)} [callback] Return err if have err or new data
      * @memberof RedisBuilder
      */
-    public set(key: Key, value: any, callback?: (err: Error, res: string | null) => void): void {
+    public set(key: Key, value: any, callback: (err: Error, res: string | null) => void): void {
         if (this.type == RedisClientType.NORMAL) callback ? this.instance.set(key, value, callback) : this.instance.set(key, value)
         else callback(new Error('Subcriber instance cannot execute set command !'), null)
     }
@@ -203,7 +204,7 @@ export abstract class RedisBuilder {
      * @param {((err: Error, res: string | null) => void)} [callback] Return err if have err or new data
      * @memberof RedisBuilder
      */
-    public setex(key: Key, seconds: number, value: any, callback?: (err: Error, res: string | null) => void): void {
+    public setex(key: Key, seconds: number, value: any, callback: (err: Error, res: string | null) => void): void {
         if (this.type == RedisClientType.NORMAL) callback ? this.instance.setex(key, seconds, value, callback) : this.instance.setex(key, seconds, value)
         else callback(new Error('Subcriber instance cannot execute setex command !'), null)
     }
@@ -240,7 +241,7 @@ export abstract class RedisBuilder {
      * @param {Redis.Redis} instance Provide the instance of connection
      * @memberof RedisBuilder
      */
-    public abstract onConnect(instance: Redis.Redis)
+    public abstract onConnect(instance: Redis.Redis): any
 
     /**
      * Execute when the instance is ready.
@@ -249,7 +250,7 @@ export abstract class RedisBuilder {
      * @param {Redis.Redis} instance Provide the instance of connection
      * @memberof RedisBuilder
      */
-    public abstract onReady(instance: Redis.Redis)
+    public abstract onReady(instance: Redis.Redis): any
 
     /**
      * Execute when the instance trigger an error
@@ -259,7 +260,7 @@ export abstract class RedisBuilder {
      * @param {string} err Provide the error from the instance
      * @memberof RedisBuilder
      */
-    public abstract onError(instance: Redis.Redis, err: string)
+    public abstract onError(instance: Redis.Redis, err: string): any
 
 }
 

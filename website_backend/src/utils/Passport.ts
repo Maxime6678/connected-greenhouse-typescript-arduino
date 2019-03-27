@@ -1,6 +1,6 @@
-import * as passport from 'passport'
+import passport from 'passport'
 import * as passportLocal from 'passport-local'
-import * as sha256 from 'sha256'
+import sha256 from 'sha256'
 
 const LocalStrategy = passportLocal.Strategy
 

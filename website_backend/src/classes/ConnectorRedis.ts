@@ -38,7 +38,7 @@ export class CallbackSubscribe extends SubscribeConstructor {
         let parse = JSON.parse(data)
 
         if (waitingRequest.has(parse.id)) {
-            waitingRequest.set(parse.id, null)
+            waitingRequest.set(parse.id, String(null))
             executedRequest.set(parse.id, parse.value)
         }
     }

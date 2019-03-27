@@ -1,4 +1,4 @@
-import { RouterBuilder, UrlType, asyncMiddleware } from './../commons/Express'
+import { RouterBuilder, UrlType } from './../commons/Express'
 import { generateId, createRequest } from '../utils/Request'
 import { getValuesGraph } from '../utils/Parser'
 
@@ -29,7 +29,7 @@ module Route {
 }
 
 let router = new RouterBuilder('/api/')
-router.addRoute(UrlType.GET, '/info/:capteur', asyncMiddleware(Route.InfoCapteur))
-router.addRoute(UrlType.GET, '/graph/:day/:hour/:limite', asyncMiddleware(Route.InfoGraph))
+router.addRoute(UrlType.GET, '/info/:capteur', Route.InfoCapteur)
+router.addRoute(UrlType.GET, '/graph/:day/:hour/:limite', Route.InfoGraph)
 
 export const apiRouter = router

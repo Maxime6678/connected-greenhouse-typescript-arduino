@@ -4,26 +4,14 @@
   "description": "A site for a connected greenhouse and communication between program and Arduino board. Made in France with ❤",
   "main": "bin/app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "ts-node ./bin/run.ts"
+    "build": "rm -rf dist/* && tsc",
+    "build:run": "npm run build && npm start",
+    "start": "node -r dotenv/config dist/App.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Maxime6678/projet-si-terminale.git"
-  },
+  "repository": "github:Maxime6678/connected-greenhouse-typescript-arduino",
   "author": "Maxime6678",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Maxime6678/projet-si-terminale/issues"
-  },
-  "homepage": "https://github.com/Maxime6678/projet-si-terminale#readme",
   "dependencies": {
-    "@types/dateformat": "^3.0.0",
-    "@types/debug": "0.0.31",
-    "@types/ioredis": "^4.0.6",
-    "@types/serialport": "^7.0.1",
-    "@types/socket.io": "^2.1.2",
-    "@types/socket.io-client": "^1.4.32",
     "dateformat": "^3.0.3",
     "debug": "^4.1.1",
     "dotenv": "^6.2.0",
@@ -33,6 +21,12 @@
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
+    "@types/dateformat": "^3.0.0",
+    "@types/debug": "0.0.31",
+    "@types/ioredis": "^4.0.6",
+    "@types/serialport": "^7.0.2",
+    "@types/socket.io": "^2.1.2",
+    "@types/socket.io-client": "^1.4.32",
     "typescript": "^3.3.3"
   }
 }

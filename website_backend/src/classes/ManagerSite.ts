@@ -4,7 +4,7 @@ import { indexRouter } from '../routers/Index'
 import { apiRouter } from '../routers/Api'
 
 import * as express from 'express'
-import * as passport from 'passport'
+import passport from 'passport'
 import * as path from 'path'
 import { } from 'connect-flash'
 
@@ -19,10 +19,10 @@ export class ManagerSite extends ExpressBuilder {
     }
 
     public registerLib() {
-        this.app.set('views', path.join(__dirname, './../views'))
+        this.app.set('views', path.join(__dirname, './../../src/views'))
         this.app.set('view engine', 'pug')
 
-        this.app.use(express.static(path.join(__dirname, './../static'), { maxAge: '7d' }))
+        this.app.use(express.static(path.join(__dirname, './../../src/static'), { maxAge: '7d' }))
 
         this.app.use(require('cookie-parser')())
         this.app.use(require('body-parser').urlencoded({

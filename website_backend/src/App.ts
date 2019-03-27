@@ -2,7 +2,7 @@ import { ManagerSite } from './classes/ManagerSite'
 import { RedisClient, EndEvent, CallbackSubscribe } from './classes/ConnectorRedis'
 import { RedisClientType } from './commons/Redis'
 
-import * as debug from 'debug'
+import debug from 'debug'
 
 // Register variable
 export var haveError: boolean = false
@@ -20,11 +20,11 @@ export const debugPrinc = debug('debug')
 export const managerSite = new ManagerSite(3000, true)
 
 // Register redis
-export const redisClient = new RedisClient(RedisClientType.NORMAL, process.env.REDIS_HOST, process.env.REDIS_PASSWORD, Number(process.env.REDIS_PORT), 8, 'GH_Website')
+export const redisClient = new RedisClient(RedisClientType.NORMAL, String(process.env.REDIS_HOST), String(process.env.REDIS_PASSWORD), Number(process.env.REDIS_PORT), 8, 'GH_Website')
 redisClient.registerEvent('end', new EndEvent())
 redisClient.connect()
 
-export const redisSubscribe = new RedisClient(RedisClientType.SUBSCRIBER, process.env.REDIS_HOST, process.env.REDIS_PASSWORD, Number(process.env.REDIS_PORT), 8, 'GH_Website_SUB')
+export const redisSubscribe = new RedisClient(RedisClientType.SUBSCRIBER, String(process.env.REDIS_HOST), String(process.env.REDIS_PASSWORD), Number(process.env.REDIS_PORT), 8, 'GH_Website_SUB')
 redisSubscribe.registerSubscribe('callback', new CallbackSubscribe())
 redisSubscribe.registerEvent('end', new EndEvent())
 redisSubscribe.connect()

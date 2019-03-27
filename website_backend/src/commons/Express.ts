@@ -1,9 +1,4 @@
-import * as Express from 'express'
-
-
-export const asyncMiddleware = fn => (req, res, next) => {
-    Promise.resolve(fn(req, res, next)).catch(next)
-}
+import Express from 'express'
 
 export abstract class ExpressBuilder {
 

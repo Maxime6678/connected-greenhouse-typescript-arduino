@@ -1,10 +1,11 @@
-import * as dateFormat from 'dateformat'
 import { redisClient, debugPrinc } from '../App'
 
+import dateFormat from 'dateformat'
+
 export function getValuesGraph(date: string, hour: number, limite: number, callback: (res: any) => void): any {
-    redisClient.get('schedule:' + date, (err: Error, res: string) => {
+    redisClient.get('schedule:' + date, (err: Error, res: string | null) => {
         let data = res == null || res === undefined ? [] : JSON.parse(res)
-        let values = []
+        let values: any = []
 
         if (hour + limite < 24) {
             for (let i = 0; i < limite; i++) {
@@ -14,14 +15,14 @@ export function getValuesGraph(date: string, hour: number, limite: number, callb
                     let filter2 = hour + i < 10 ? '0' + (hour + i) + ':' + j + '0' : (hour + i) + ':' + j + '5'
 
                     // For XX:X0
-                    val1 = data.filter(x => dateFormat(new Date(x.date), 'HH":"MM') === filter1)[0]
+                    val1 = data.filter((x: { date: string | number | Date; }) => dateFormat(new Date(x.date), 'HH":"MM') === filter1)[0]
                     if (!val1) val1 = {
                         date: null,
                         data: '0@0@0'
                     }
 
                     // For XX:X5
-                    val2 = data.filter(x => dateFormat(new Date(x.date), 'HH":"MM') === filter2)[0]
+                    val2 = data.filter((x: { date: string | number | Date; }) => dateFormat(new Date(x.date), 'HH":"MM') === filter2)[0]
                     if (!val2) val2 = {
                         date: null,
                         data: '0@0@0'
@@ -43,7 +44,7 @@ export function getValuesGraph(date: string, hour: number, limite: number, callb
             let date1 = date,
                 date2 = addDay(date)
 
-            redisClient.get('schedule:' + date2, (err: Error, res: string) => {
+            redisClient.get('schedule:' + date2, (err: Error, res: string | null) => {
                 let parse = res == null || res === undefined ? [] : JSON.parse(res)
                 for (let index in parse) {
                     data.push(parse[index])
@@ -61,14 +62,14 @@ export function getValuesGraph(date: string, hour: number, limite: number, callb
                         let val1, val2
 
                         // For XX:X0
-                        val1 = data.filter(x => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date1Day + "-" + (hour + i) + ':' + j + '0')[0]
+                        val1 = data.filter((x: { date: string | number | Date; }) => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date1Day + "-" + (hour + i) + ':' + j + '0')[0]
                         if (!val1) val1 = {
                             date: null,
                             data: '0@0@0'
                         }
 
                         // For XX:X5
-                        val2 = data.filter(x => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date1Day + "-" + (hour + i) + ':' + j + '5')[0]
+                        val2 = data.filter((x: { date: string | number | Date; }) => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date1Day + "-" + (hour + i) + ':' + j + '5')[0]
                         if (!val2) val2 = {
                             date: null,
                             data: '0@0@0'
@@ -91,14 +92,14 @@ export function getValuesGraph(date: string, hour: number, limite: number, callb
                         let val1, val2
 
                         // For XX:X0
-                        val1 = data.filter(x => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date2Day + "-" + (i) + ':' + j + '0')[0]
+                        val1 = data.filter((x: { date: string | number | Date; }) => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date2Day + "-" + (i) + ':' + j + '0')[0]
                         if (!val1) val1 = {
                             date: null,
                             data: '0@0@0'
                         }
 
                         // For XX:X5
-                        val2 = data.filter(x => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date2Day + "-" + (i) + ':' + j + '5')[0]
+                        val2 = data.filter((x: { date: string | number | Date; }) => dateFormat(new Date(x.date), 'dd"-"HH":"MM') === date2Day + "-" + (i) + ':' + j + '5')[0]
                         if (!val2) val2 = {
                             date: null,
                             data: '0@0@0'
@@ -123,10 +124,10 @@ export function getValuesGraph(date: string, hour: number, limite: number, callb
 }
 
 export function getPartList(callback: (data: any) => void): void {
-    let result = []
-    redisClient.get('_compartment', (err: Error, res: string) => {
+    let result: any = []
+    redisClient.get('_compartment', (err: Error, res: string | null) => {
         let dataComp = res == null || res === undefined ? [] : JSON.parse(res)
-        redisClient.get('_types', (err: Error, res: string) => {
+        redisClient.get('_types', (err: Error, res: string | null) => {
             let dataTypes = res == null || res === undefined ? [] : JSON.parse(res)
             for (let i in dataComp) {
                 let ar = []
@@ -191,7 +192,7 @@ export function addDay(date: string) {
     return dayR + '' + monthR + '' + year
 }
 
-export function removeDay(date) {
+export function removeDay(date: string) {
     let split = date.split('')
 
     let day = parseInt(split[0] + '' + split[1])
@@ -217,7 +218,7 @@ export function removeDay(date) {
     return dayR + '' + monthR + '' + year
 }
 
-export function removeHour(hour) {
+export function removeHour(hour: number) {
     if (hour - 1 >= 0) return hour - 1
     else return 23
 }

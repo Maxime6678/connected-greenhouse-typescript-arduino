@@ -3,8 +3,8 @@ import { haveError, debugPrinc, redisClient } from '../App'
 import { getHourSelect, getDaySelect, getPartList } from '../utils/Parser'
 
 import * as Express from 'express'
-import * as passport from 'passport'
-import * as dateFormat from 'dateformat'
+import passport from 'passport'
+import dateFormat from 'dateformat'
 
 module Route {
 
@@ -23,10 +23,10 @@ module Route {
         if (!req.query.typeID) return res.redirect('/')
         if (!req.query.compartment) return res.redirect('/')
 
-        redisClient.get('_compartment', (err: Error, data: string) => {
+        redisClient.get('_compartment', (err: Error, data: string | null) => {
             let parse = data == null || data === undefined ? [] : JSON.parse(data)
             parse[req.query.compartment - 1].typeID = req.query.typeID
-            redisClient.set('_compartment', JSON.stringify(parse))
+            redisClient.set('_compartment', JSON.stringify(parse), () => null)
             req.flash('successMessage', 'Changement effectué !')
             return res.redirect('/')
         })
