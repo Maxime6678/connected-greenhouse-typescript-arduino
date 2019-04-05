@@ -7,8 +7,14 @@ export function createRequest(name: string, id: string): Promise<string> {
         waitingRequest.set(id, name)
         debugSerial('send request %o, get %o', id, name)
 
-        if (process.env.FAKE_ARDUINO == 'false') port.write(name + ':' + id)
-        else executedRequest.set(id, name != 'all' ? Math.floor(Math.random() * 100) + '' : getFake(baseTemp) + '@' + getFake(baseHum) + '@' + getFake(baseLux))
+        if (process.env.FAKE_ARDUINO == 'false') {
+            port.write(name + ':' + id)
+            debugSerial('send to arduino')
+        }
+        else {
+            executedRequest.set(id, name != 'all' ? Math.floor(Math.random() * 100) + '' : getFake(baseTemp) + '@' + getFake(baseHum) + '@' + getFake(baseLux))
+            debugSerial('not send to arduino')
+        }
 
         let interval: NodeJS.Timeout
         interval = setInterval(async () => {

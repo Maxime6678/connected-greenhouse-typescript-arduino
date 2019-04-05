@@ -1,33 +1,62 @@
 #include<dht.h>
+#include <pt.h>
 
 #define DHT11_PIN 3
 #define LDR_PIN A0
+#define LED_PIN 2
+#define LED_2_PIN 4
+#define LED_3_PIN 5
 
 dht DHT;
+static struct pt ptL;
 
 void setup() {
   Serial.begin(9600);
   pinMode(LDR_PIN, INPUT);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(LED_2_PIN, OUTPUT);
+  pinMode(LED_3_PIN, OUTPUT);
+
+  PT_INIT(&ptL);
+}
+
+static int checkInfo(struct pt *pt) {
+  static String cmd, id, incomming;
+  PT_BEGIN(pt);
+  incomming = Serial.readString();
+  cmd = getValue(incomming, ':', 0);
+  id = getValue(incomming, ':', 1);
+
+  if (cmd == "temp") {
+    DHT.read11(DHT11_PIN);
+    Serial.println(id + ":" + getTemp());
+  } else if (cmd == "hum") {
+    DHT.read11(DHT11_PIN);
+    Serial.println(id + ":" + getHum());
+  } else if (cmd == "all") {
+    DHT.read11(DHT11_PIN);
+    Serial.println(id + ":" + getTemp() + "@" + getHum() + "@" + getLux());
+  } else if (cmd == "lux") {
+    Serial.println(id + ":" + getLux());
+  } else if (cmd == "open") {
+    digitalWrite(LED_PIN, HIGH);
+    delay(2000);
+    digitalWrite(LED_PIN, LOW);
+  } else if (cmd == "water") {
+    digitalWrite(LED_2_PIN, HIGH);
+    delay(2000);
+    digitalWrite(LED_2_PIN, LOW);
+  } else if (cmd == "lamp") {
+    digitalWrite(LED_3_PIN, HIGH);
+    delay(2000);
+    digitalWrite(LED_3_PIN, LOW);
+  }
+  PT_END(pt);
 }
 
 void loop() {
-  String cmd, id, incomming;
   if (Serial.available() > 0) {
-    incomming = Serial.readString();
-    cmd = getValue(incomming, ':', 0);
-    id = getValue(incomming, ':', 1);
-    if (cmd == "temp") {
-      DHT.read11(DHT11_PIN);
-      Serial.println(id + ":" + getTemp());
-    } else if (cmd == "hum") {
-      DHT.read11(DHT11_PIN);
-      Serial.println(id + ":" + getHum());
-    } else if (cmd == "all") {
-      DHT.read11(DHT11_PIN);
-      Serial.println(id + ":" + getTemp() + "@" + getHum() + "@" + getLux());
-    } else if (cmd == "lux") {
-      Serial.println(id + ":" + getLux());
-    }
+    checkInfo(&ptL);
   }
 }
 

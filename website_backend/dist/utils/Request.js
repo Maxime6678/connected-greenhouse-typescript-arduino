@@ -23,6 +23,17 @@ function createRequest(name, id) {
     });
 }
 exports.createRequest = createRequest;
+function createRequestDo(action, option, id) {
+    App_1.waitingRequest.set(id, action);
+    App_1.debugRedis('send request %o, get %o', id, action);
+    App_1.redisClient.instance.publish('request', JSON.stringify({
+        secret: process.env.REDIS_SECRET,
+        id: id,
+        need: action,
+        option: option
+    }));
+}
+exports.createRequestDo = createRequestDo;
 function generateId() {
     let result = '';
     let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

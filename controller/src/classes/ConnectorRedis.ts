@@ -37,7 +37,7 @@ export class RequestSubscribe extends SubscribeConstructor {
 
     execute(client: Redis, data: string) {
         let parse = JSON.parse(data)
-        let possibilities = ['temp', 'hum', 'lux', 'all']
+        let possibilities = ['temp', 'hum', 'lux', 'all', 'lamp', 'water', 'open']
         if (parse.secret != process.env.REDIS_SECRET) return client.disconnect()
         debugRedis('request %o, get %o', parse.id, parse.need)
 

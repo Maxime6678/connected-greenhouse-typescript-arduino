@@ -34,7 +34,7 @@ if (process.env.FAKE_ARDUINO == 'false') {
         let find = ports.find((port) => /arduino/i.test(port.manufacturer));
         if (!find) {
             exports.debugSerial('Arduino Not found Use fixed port');
-            portName = "COM10";
+            portName = "COM9";
         }
         else {
             portName = find.comName;
@@ -51,6 +51,7 @@ if (process.env.FAKE_ARDUINO == 'false') {
             exports.redisClient.connect();
             exports.redisSubscribe.connect();
             parser.on('data', (data) => {
+                console.log('data receive: ', data);
                 let dataParse = data.split(':');
                 if (dataParse.length == 1)
                     return;

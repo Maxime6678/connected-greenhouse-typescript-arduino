@@ -38,7 +38,7 @@ if (process.env.FAKE_ARDUINO == 'false') {
             let find = ports.find((port: { manufacturer: string; }) => /arduino/i.test(port.manufacturer))
             if (!find) {
                 debugSerial('Arduino Not found Use fixed port')
-                portName = "COM10"
+                portName = "COM9"
             } else {
                 portName = find.comName
                 debugSerial('found arduino on %o', portName)
@@ -55,6 +55,7 @@ if (process.env.FAKE_ARDUINO == 'false') {
             redisClient.connect()
             redisSubscribe.connect()
             parser.on('data', (data: string) => {
+                console.log('data receive: ', data)
                 let dataParse = data.split(':')
                 if (dataParse.length == 1) return
                 executedRequest.set(dataParse[0], dataParse[1])

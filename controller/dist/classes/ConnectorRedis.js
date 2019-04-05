@@ -29,7 +29,7 @@ exports.EndEvent = EndEvent;
 class RequestSubscribe extends Redis_1.SubscribeConstructor {
     execute(client, data) {
         let parse = JSON.parse(data);
-        let possibilities = ['temp', 'hum', 'lux', 'all'];
+        let possibilities = ['temp', 'hum', 'lux', 'all', 'lamp', 'water', 'open'];
         if (parse.secret != process.env.REDIS_SECRET)
             return client.disconnect();
         App_1.debugRedis('request %o, get %o', parse.id, parse.need);

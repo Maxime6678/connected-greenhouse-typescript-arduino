@@ -30,11 +30,38 @@ $(document).ready(function () {
                 $('#hum_val').text(parseInt(parse[1]) + "%")
 
                 $('#lux_val').text(parseInt(parse[2]))
-            },
+            }
+        })
+    }, 5000)
+
+    $('#lamp').on('click', () => {
+        $.ajax({
+            type: "GET",
+            url: window.location.origin + "/api/do/lamp/a",
             error: function (request, status, error) {
                 alert(request.responseText)
             }
         })
-    }, 5000)
+    })
+
+    $('#water').on('click', () => {
+        $.ajax({
+            type: "GET",
+            url: window.location.origin + "/api/do/water/a",
+            error: function (request, status, error) {
+                alert(request.responseText)
+            }
+        })
+    })
+
+    $('#open').on('click', () => {
+        $.ajax({
+            type: "GET",
+            url: window.location.origin + "/api/do/open/a",
+            error: function (request, status, error) {
+                alert(request.responseText)
+            }
+        })
+    })
 
 })

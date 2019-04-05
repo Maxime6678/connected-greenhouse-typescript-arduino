@@ -24,6 +24,18 @@ export function createRequest(name: string, id: string): Promise<string> {
     })
 }
 
+export function createRequestDo(action: string, option: string, id: string) {
+    waitingRequest.set(id, action)
+    debugRedis('send request %o, get %o', id, action)
+
+    redisClient.instance.publish('request', JSON.stringify({
+        secret: process.env.REDIS_SECRET,
+        id: id,
+        need: action,
+        option: option
+    }))
+}
+
 export function generateId(): string {
     let result = ''
     let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
