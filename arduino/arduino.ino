@@ -1,14 +1,18 @@
 #include<dht.h>
-#include <pt.h>
 
 #define DHT11_PIN 3
 #define LDR_PIN A0
 #define LED_PIN 2
 #define LED_2_PIN 4
 #define LED_3_PIN 5
+#define MOT_IN1 9
+#define MOT_IN2 10
 
 dht DHT;
-static struct pt ptL;
+String command, id;
+int temp, hum, lux;
+boolean isMotorWork;
+unsigned long checkTime;
 
 void setup() {
   Serial.begin(9600);
@@ -16,48 +20,61 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   pinMode(LED_2_PIN, OUTPUT);
   pinMode(LED_3_PIN, OUTPUT);
+  pinMode(MOT_IN1, OUTPUT);
+  pinMode(MOT_IN2, OUTPUT);
 
-  PT_INIT(&ptL);
-}
+  digitalWrite(MOT_IN1, LOW);
+  digitalWrite(MOT_IN2, LOW);
 
-static int checkInfo(struct pt *pt) {
-  static String cmd, id, incomming;
-  PT_BEGIN(pt);
-  incomming = Serial.readString();
-  cmd = getValue(incomming, ':', 0);
-  id = getValue(incomming, ':', 1);
-
-  if (cmd == "temp") {
-    DHT.read11(DHT11_PIN);
-    Serial.println(id + ":" + getTemp());
-  } else if (cmd == "hum") {
-    DHT.read11(DHT11_PIN);
-    Serial.println(id + ":" + getHum());
-  } else if (cmd == "all") {
-    DHT.read11(DHT11_PIN);
-    Serial.println(id + ":" + getTemp() + "@" + getHum() + "@" + getLux());
-  } else if (cmd == "lux") {
-    Serial.println(id + ":" + getLux());
-  } else if (cmd == "open") {
-    digitalWrite(LED_PIN, HIGH);
-    delay(2000);
-    digitalWrite(LED_PIN, LOW);
-  } else if (cmd == "water") {
-    digitalWrite(LED_2_PIN, HIGH);
-    delay(2000);
-    digitalWrite(LED_2_PIN, LOW);
-  } else if (cmd == "lamp") {
-    digitalWrite(LED_3_PIN, HIGH);
-    delay(2000);
-    digitalWrite(LED_3_PIN, LOW);
-  }
-  PT_END(pt);
+  temp = 0;
+  hum = 0;
+  lux = 0;
+  execRefresh();
 }
 
 void loop() {
+  checkCommand();
+  checkRefresh();
+}
+
+void checkCommand() {
   if (Serial.available() > 0) {
-    checkInfo(&ptL);
+    getCommand(command, id);
+    execCommand(command, id);
   }
+}
+
+void getCommand(String &a, String &b) {
+  String incomming = Serial.readString();
+  a = getValue(incomming, ':', 0);
+  b = getValue(incomming, ':', 1);
+}
+
+void execCommand(String &a, String &b) {
+  if (a == "temp") {
+    Serial.println(b + ":" + temp);
+  } else if (a == "hum") {
+    Serial.println(b + ":" + hum);
+  } else if (a == "lux") {
+    Serial.println(b + ":" + lux);
+  } else if (a == "all") {
+    Serial.println(b + ":" + temp + "@" + hum + "@" + lux);
+  }
+}
+
+void checkRefresh() {
+  if ((millis() - checkTime) > 5000) {
+    execRefresh();
+  }
+}
+
+void execRefresh() {
+  checkTime = millis();
+  DHT.read11(DHT11_PIN);
+  temp = getTemp();
+  hum = getHum();
+  lux = getLux();
+  Serial.println(lux);
 }
 
 int getTemp() {
@@ -68,12 +85,12 @@ int getHum() {
   return DHT.humidity;
 }
 
-String getLux() {
+int getLux() {
   int vout1 = analogRead(A0);
   float vout = vout1 / 204.6;
   float R = (11000 - vout * 2200) / vout;
   float lux = (pow( R, (1 / -0.8616))) / (pow( 10, (5.118 / -0.8616)));
-  return String(lux);
+  return lux;
 }
 
 String getValue(String data, char separator, int index) {

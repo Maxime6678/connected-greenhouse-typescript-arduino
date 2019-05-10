@@ -11,6 +11,7 @@ var Route;
         if (!req.params.capteur)
             return res.status(400).send({ status: 'error', code: 400, message: 'Capteur was not provided!' });
         Request_1.createRequest(req.params.capteur, Request_1.generateId()).then((result) => {
+            console.log(result);
             res.status(200).send({ status: 'success', value: result });
         });
     }

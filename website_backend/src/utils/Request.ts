@@ -16,7 +16,6 @@ export function createRequest(name: string, id: string): Promise<string> {
             if (executedRequest.has(id)) {
                 clearInterval(interval)
                 debugRedis('finish request %o, value %o', id, executedRequest.get(id))
-                await delay(1000)
                 resolve(executedRequest.get(id))
                 executedRequest.set(id, String(null))
             }

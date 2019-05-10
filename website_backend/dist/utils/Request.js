@@ -15,7 +15,6 @@ function createRequest(name, id) {
             if (App_1.executedRequest.has(id)) {
                 clearInterval(interval);
                 App_1.debugRedis('finish request %o, value %o', id, App_1.executedRequest.get(id));
-                await delay(1000);
                 resolve(App_1.executedRequest.get(id));
                 App_1.executedRequest.set(id, String(null));
             }

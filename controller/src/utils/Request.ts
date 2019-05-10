@@ -1,6 +1,6 @@
 import { waitingRequest, executedRequest, port, debugSerial } from '../App'
 
-var baseTemp = 20, baseHum = 60, baseLux = 80
+var baseTemp = 20, baseHum = 60, baseLux = 200
 
 export function createRequest(name: string, id: string): Promise<string> {
     return new Promise<string>((resolve) => {
