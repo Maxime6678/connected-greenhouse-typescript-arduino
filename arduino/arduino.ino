@@ -10,12 +10,19 @@
 #define MOT_IN1 9
 #define MOT_IN2 10
 
+const String DEFAULT_STATE = "Mode automatique ...";
+const String OPEN_STATE = "<!> Serre ouverture";
+const String OPENED_STATE = "<!> Serre ouverte";
+const String CLOSE_STATE = "<!> Serre fermeture";
+const String WATER_STATE = "<!> Arrosage ...";
+const String LAMP_STATE = "<!> Eclairage ...";
+
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 dht DHT;
-String command, id;
+String command, id, state, lastState;
 int temp, hum, lux;
-boolean isMotorWork;
-unsigned long checkTime;
+boolean isMotor = false, isWater = false, isLamp = false, isOpen = false;
+unsigned long checkTime, motTime, waterTime;
 
 void setup() {
   Serial.begin(115200);
@@ -29,27 +36,30 @@ void setup() {
   digitalWrite(MOT_IN1, LOW);
   digitalWrite(MOT_IN2, LOW);
 
-  lcd.begin(20,4);
+  lcd.begin(20, 4);
   lcd.backlight();
 
   temp = 0;
   hum = 0;
   lux = 0;
+  state = DEFAULT_STATE;
+  lastState = state;
   execRefresh();
 }
 
 void loop() {
   checkCommand();
   checkRefresh();
+  checkMot();
   showInfo();
 }
 
 void checkCommand() {
   if (Serial.available() > 0) {
-     String incomming = Serial.readStringUntil('\n');
-     command = getValue(incomming, ':', 0);
-     id = getValue(incomming, ':', 1);
-     execCommand(command, id);
+    String incomming = Serial.readStringUntil('\n');
+    command = getValue(incomming, ':', 0);
+    id = getValue(incomming, ':', 1);
+    execCommand(command, id);
   }
 }
 
@@ -63,11 +73,13 @@ void execCommand(String a, String b) {
   } else if (a == "all") {
     Serial.println(b + ":" + temp + "@" + hum + "@" + lux);
   } else if (a == "open") {
-    digitalWrite(LED_PIN, !digitalRead(LED_PIN));
+    isOpen ? closeHouse() : openHouse();
   } else if (a == "water") {
-    digitalWrite(LED_2_PIN, !digitalRead(LED_2_PIN));
+    startWater();
   } else if (a == "lamp") {
-    digitalWrite(LED_3_PIN, !digitalRead(LED_3_PIN));
+    isLamp ? stopLamp() : startLamp();
+  } else if (a == "status") {
+    Serial.println(b + ":" + isOpen + "@" + isWater + "@" + isLamp);
   }
 }
 
@@ -86,17 +98,100 @@ void execRefresh() {
 }
 
 void showInfo() {
+  state = getState();
+  if (lastState != state) {
+    lastState = state;
+    lcd.clear();
+  }
   lcd.setCursor(0, 0);
   lcd.print("Temperature: ");
   lcd.print(temp);
+  lcd.print((char)223);
+  lcd.print("c");
   lcd.setCursor(0, 1);
   lcd.print("Humidite: ");
   lcd.print(hum);
+  lcd.print("%");
   lcd.setCursor(0, 2);
   lcd.print("Lumiere: ");
   lcd.print(lux);
+  lcd.print(" lux    ");
   lcd.setCursor(0, 3);
-  lcd.print("Mode automatique");
+  lcd.print(state);
+}
+
+void openHouse() {
+  if (isMotor) return;
+  digitalWrite(LED_PIN, !isMotor);
+  // digitalWrite(Mot, HIGH);
+  
+  isOpen = true;
+  isMotor = true;
+  motTime = millis();
+}
+
+void closeHouse() {
+  if (isMotor) return;
+  digitalWrite(LED_PIN, !isMotor);
+  // digitalWrite(Mot, HIGH);
+  
+  isOpen = false;
+  isMotor = true;
+  motTime = millis();
+}
+
+void startWater() {
+  if (isWater) return;
+  digitalWrite(LED_2_PIN, !isWater);
+  
+  isWater = true;
+  waterTime = millis();
+}
+
+void stopWater() {
+  if (!isWater) return;
+  digitalWrite(LED_2_PIN, !isWater);
+  
+  isWater = false;
+}
+
+void startLamp() {
+  if (isLamp) return;
+  digitalWrite(LED_3_PIN, !isLamp);
+  isLamp = true;
+}
+
+void stopLamp() {
+  if (!isLamp) return;
+  digitalWrite(LED_3_PIN, !isLamp);
+  isLamp = false;
+}
+
+void checkMot() {
+  if (isMotor && (millis() - motTime) > 250) digitalWrite(MOT_IN1, 60);
+  if (isMotor && (millis() - motTime) > 500) digitalWrite(MOT_IN1, 120);
+  if (isMotor && (millis() - motTime) > 750) digitalWrite(MOT_IN1, 180);
+  if (isMotor && (millis() - motTime) > 1000) digitalWrite(MOT_IN1, 255);
+  if (isMotor && (millis() - motTime) > 4250) digitalWrite(MOT_IN1, 180);
+  if (isMotor && (millis() - motTime) > 4500) digitalWrite(MOT_IN1, 120);
+  if (isMotor && (millis() - motTime) > 4750) digitalWrite(MOT_IN1, 60);
+  
+  if (isMotor && (millis() - motTime) > 5000) {
+    digitalWrite(LED_PIN, !isMotor);
+    // digitalWrite(Mot, LOW);
+    isMotor = false;
+  }
+
+  if(isWater && (millis() - waterTime) > 15000) stopWater();
+}
+
+String getState(){
+  if (isMotor && isOpen) return OPEN_STATE;
+  if (isMotor && !isOpen) return CLOSE_STATE;
+  if (isWater) return WATER_STATE;
+  if (isOpen && !isMotor) return OPENED_STATE;
+  if (isLamp) return LAMP_STATE;
+  return DEFAULT_STATE;
 }
 
 int getTemp() {
