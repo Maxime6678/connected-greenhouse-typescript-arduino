@@ -8,7 +8,7 @@ export function createRequest(name: string, id: string): Promise<string> {
         debugSerial('send request %o, get %o', id, name)
 
         if (process.env.FAKE_ARDUINO == 'false') {
-            port.write(name + ':' + id)
+            port.write(name + ':' + id + '\n')
             debugSerial('send to arduino')
         }
         else {

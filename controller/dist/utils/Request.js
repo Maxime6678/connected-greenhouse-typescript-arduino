@@ -6,16 +6,14 @@ function createRequest(name, id) {
     return new Promise((resolve) => {
         App_1.waitingRequest.set(id, name);
         App_1.debugSerial('send request %o, get %o', id, name);
-        App_1.port.write(name + ':' + id);
-        App_1.debugSerial('send to arduino');
-        /*if (process.env.FAKE_ARDUINO == 'false') {
-            port.write(name + ':' + id)
-            debugSerial('send to arduino')
+        if (process.env.FAKE_ARDUINO == 'false') {
+            App_1.port.write(name + ':' + id + '\n');
+            App_1.debugSerial('send to arduino');
         }
         else {
-            executedRequest.set(id, name != 'all' ? Math.floor(Math.random() * 100) + '' : getFake(baseTemp) + '@' + getFake(baseHum) + '@' + getFake(baseLux))
-            debugSerial('not send to arduino')
-        }*/
+            App_1.executedRequest.set(id, name != 'all' ? Math.floor(Math.random() * 100) + '' : getFake(baseTemp) + '@' + getFake(baseHum) + '@' + getFake(baseLux));
+            App_1.debugSerial('not send to arduino');
+        }
         let interval;
         interval = setInterval(async () => {
             if (App_1.executedRequest.has(id)) {

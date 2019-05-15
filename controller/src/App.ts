@@ -48,7 +48,7 @@ if (process.env.FAKE_ARDUINO == 'false') {
     interval = setInterval(() => {
         if (portName != null) {
             port = new SerialPort(portName, {
-                baudRate: 9600
+                baudRate: 115200
             })
             parser = port.pipe(new Readline({ delimiter: '\r\n' }))
             debugSerial('connected')

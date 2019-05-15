@@ -26,7 +26,7 @@ class Control {
         Request_1.createRequest('all', Request_1.generateId()).then((data) => {
             let parse = data.split('@'); // 0 = temp, 1 = hum, 2 = lux
             this.saveData(data);
-            if (parse[0] > '20') {
+            if (parse[0] < '18' || parse[0] < '25') {
                 App_1.debugRedis('TEMP ALERT');
             }
         });

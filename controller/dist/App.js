@@ -44,7 +44,7 @@ if (process.env.FAKE_ARDUINO == 'false') {
     interval = setInterval(() => {
         if (portName != null) {
             exports.port = new serialport_1.default(portName, {
-                baudRate: 9600
+                baudRate: 115200
             });
             parser = exports.port.pipe(new parser_readline_1.default({ delimiter: '\r\n' }));
             exports.debugSerial('connected');

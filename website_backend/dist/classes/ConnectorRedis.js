@@ -27,7 +27,6 @@ class EndEvent extends Redis_1.EventConstructor {
 exports.EndEvent = EndEvent;
 class CallbackSubscribe extends Redis_1.SubscribeConstructor {
     execute(client, data) {
-        console.log(data);
         let parse = JSON.parse(data);
         if (App_1.waitingRequest.has(parse.id)) {
             App_1.waitingRequest.set(parse.id, String(null));
