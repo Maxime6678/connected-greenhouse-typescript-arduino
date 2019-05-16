@@ -9,6 +9,7 @@
 #define LED_3_PIN 5
 #define MOT_IN1 9
 #define MOT_IN2 10
+#define MOT_EN 11
 
 const String DEFAULT_STATE = "Mode automatique ...";
 const String OPEN_STATE = "<!> Serre ouverture";
@@ -30,9 +31,11 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   pinMode(LED_2_PIN, OUTPUT);
   pinMode(LED_3_PIN, OUTPUT);
+  pinMode(MOT_EN, OUTPUT);
   pinMode(MOT_IN1, OUTPUT);
   pinMode(MOT_IN2, OUTPUT);
 
+  digitalWrite(MOT_EN, LOW);
   digitalWrite(MOT_IN1, LOW);
   digitalWrite(MOT_IN2, LOW);
 
@@ -123,7 +126,7 @@ void showInfo() {
 void openHouse() {
   if (isMotor) return;
   digitalWrite(LED_PIN, !isMotor);
-  // digitalWrite(Mot, HIGH);
+  directMotor(30);
   
   isOpen = true;
   isMotor = true;
@@ -133,7 +136,7 @@ void openHouse() {
 void closeHouse() {
   if (isMotor) return;
   digitalWrite(LED_PIN, !isMotor);
-  // digitalWrite(Mot, HIGH);
+  indirectMotor(30);
   
   isOpen = false;
   isMotor = true;
@@ -168,17 +171,17 @@ void stopLamp() {
 }
 
 void checkMot() {
-  if (isMotor && (millis() - motTime) > 250) digitalWrite(MOT_IN1, 60);
-  if (isMotor && (millis() - motTime) > 500) digitalWrite(MOT_IN1, 120);
-  if (isMotor && (millis() - motTime) > 750) digitalWrite(MOT_IN1, 180);
-  if (isMotor && (millis() - motTime) > 1000) digitalWrite(MOT_IN1, 255);
-  if (isMotor && (millis() - motTime) > 4250) digitalWrite(MOT_IN1, 180);
-  if (isMotor && (millis() - motTime) > 4500) digitalWrite(MOT_IN1, 120);
-  if (isMotor && (millis() - motTime) > 4750) digitalWrite(MOT_IN1, 60);
+  if (isMotor && (millis() - motTime) > 250) isOpen ? directMotor(60) : indirectMotor(60);
+  if (isMotor && (millis() - motTime) > 500) isOpen ? directMotor(120) : indirectMotor(120);
+  if (isMotor && (millis() - motTime) > 750) isOpen ? directMotor(180) : indirectMotor(180);
+  if (isMotor && (millis() - motTime) > 1000) isOpen ? directMotor(255) : indirectMotor(255);
+  if (isMotor && (millis() - motTime) > 4250) isOpen ? directMotor(180) : indirectMotor(180);
+  if (isMotor && (millis() - motTime) > 4500) isOpen ? directMotor(120) : indirectMotor(120);
+  if (isMotor && (millis() - motTime) > 4750) isOpen ? directMotor(60) : indirectMotor(60);
   
   if (isMotor && (millis() - motTime) > 5000) {
     digitalWrite(LED_PIN, !isMotor);
-    // digitalWrite(Mot, LOW);
+    stopMotor();
     isMotor = false;
   }
 
@@ -192,6 +195,24 @@ String getState(){
   if (isOpen && !isMotor) return OPENED_STATE;
   if (isLamp) return LAMP_STATE;
   return DEFAULT_STATE;
+}
+
+void directMotor(int pwm) {
+  analogWrite(MOT_EN, pwm);
+  digitalWrite(MOT_IN1, HIGH);
+  digitalWrite(MOT_IN2, LOW);
+}
+
+void indirectMotor(int pwm) {
+  analogWrite(MOT_EN, pwm);
+  digitalWrite(MOT_IN1, LOW);
+  digitalWrite(MOT_IN2, HIGH);
+}
+
+void stopMotor() {
+  digitalWrite(MOT_EN, LOW);
+  digitalWrite(MOT_IN1, LOW);
+  digitalWrite(MOT_IN2, LOW);
 }
 
 int getTemp() {
